@@ -4,56 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Triqui en Línea</title>
-    <!-- Tailwind CSS (CDN for simple VanillaJS setup) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Base styles if Tailwind is not enough */
-        body { font-family: 'Inter', sans-serif; }
-    </style>
-</head>
-<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col items-center justify-center p-4">
 
-    <div id="app" class="w-full max-w-md bg-white rounded-xl shadow-lg p-6">
-        <h1 class="text-3xl font-bold text-center mb-6 text-blue-600">Triqui en Línea</h1>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div id="app">
+        <h1>Triqui en Línea</h1>
 
         <!-- Welcome Screen -->
-        <div id="welcome-screen" class="flex flex-col space-y-4">
-            <input type="text" id="player-name" placeholder="Tu nombre..." class="border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <button id="btn-create" class="bg-blue-600 text-white font-semibold p-2 rounded-md hover:bg-blue-700 transition">Crear Partida</button>
-            <div class="flex space-x-2">
-                <input type="text" id="game-id-input" placeholder="ID Partida (ej. 1234)" class="border p-2 rounded-md flex-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <button id="btn-join" class="bg-green-600 text-white font-semibold p-2 rounded-md hover:bg-green-700 transition">Unirse</button>
+        <div id="welcome-screen">
+            <input 
+                type="text" 
+                id="player-name" 
+                placeholder="Tu nombre..."
+            >
+
+            <button id="btn-create">
+                Crear Partida
+            </button>
+
+            <div class="join-container">
+                <input 
+                    type="text" 
+                    id="game-id-input" 
+                    placeholder="ID Partida (ej. 1234)"
+                >
+
+                <button id="btn-join">
+                    Unirse
+                </button>
             </div>
         </div>
 
         <!-- Game Screen (Hidden initially) -->
-        <div id="game-screen" class="hidden flex-col items-center">
-            <div class="mb-4 text-center">
-                <p id="game-info" class="text-lg font-semibold text-gray-700">Partida: <span id="display-game-id" class="text-blue-600"></span></p>
-                <p id="status-message" class="text-md text-gray-600 mt-2">Esperando a otro jugador...</p>
+        <div id="game-screen">
+            <div class="game-info">
+                <p id="game-info">
+                    Partida: 
+                    <span id="display-game-id"></span>
+                </p>
+
+                <p id="status-message">
+                    Esperando a otro jugador...
+                </p>
             </div>
 
             <!-- The Board -->
-            <div id="board" class="grid grid-cols-3 gap-2 w-full max-w-[300px]">
-                <!-- 9 cells -->
-                <button class="cell w-full aspect-square bg-gray-200 text-4xl font-bold flex items-center justify-center rounded-md hover:bg-gray-300 transition" data-index="0"></button>
-                <button class="cell w-full aspect-square bg-gray-200 text-4xl font-bold flex items-center justify-center rounded-md hover:bg-gray-300 transition" data-index="1"></button>
-                <button class="cell w-full aspect-square bg-gray-200 text-4xl font-bold flex items-center justify-center rounded-md hover:bg-gray-300 transition" data-index="2"></button>
-                <button class="cell w-full aspect-square bg-gray-200 text-4xl font-bold flex items-center justify-center rounded-md hover:bg-gray-300 transition" data-index="3"></button>
-                <button class="cell w-full aspect-square bg-gray-200 text-4xl font-bold flex items-center justify-center rounded-md hover:bg-gray-300 transition" data-index="4"></button>
-                <button class="cell w-full aspect-square bg-gray-200 text-4xl font-bold flex items-center justify-center rounded-md hover:bg-gray-300 transition" data-index="5"></button>
-                <button class="cell w-full aspect-square bg-gray-200 text-4xl font-bold flex items-center justify-center rounded-md hover:bg-gray-300 transition" data-index="6"></button>
-                <button class="cell w-full aspect-square bg-gray-200 text-4xl font-bold flex items-center justify-center rounded-md hover:bg-gray-300 transition" data-index="7"></button>
-                <button class="cell w-full aspect-square bg-gray-200 text-4xl font-bold flex items-center justify-center rounded-md hover:bg-gray-300 transition" data-index="8"></button>
+            <div id="board">
+                <button class="cell" data-index="0"></button>
+                <button class="cell" data-index="1"></button>
+                <button class="cell" data-index="2"></button>
+                <button class="cell" data-index="3"></button>
+                <button class="cell" data-index="4"></button>
+                <button class="cell" data-index="5"></button>
+                <button class="cell" data-index="6"></button>
+                <button class="cell" data-index="7"></button>
+                <button class="cell" data-index="8"></button>
             </div>
 
-            <button id="btn-restart" class="mt-6 bg-red-500 text-white font-semibold p-2 px-6 rounded-md hover:bg-red-600 transition hidden">Reiniciar Juego</button>
+            <button id="btn-restart">
+                Reiniciar Juego
+            </button>
         </div>
-
     </div>
 
     <!-- Socket.io -->
     <script src="/socket.io/socket.io.js"></script>
+
     <!-- ES Modules -->
     <script type="module" src="/js/main.js"></script>
 </body>
