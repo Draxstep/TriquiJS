@@ -105,5 +105,42 @@ module.exports = (io) => {
                 winner: game.winner
             });
         });
+
+        socket.on('restart_game', ({ gameId }) => {
+            const game = getGame(gameId);
+
+            // Validamos que el juego exista
+            if (!game) return;
+
+            // Restauramos el estado del juego a los valores iniciales
+            game.board = gameLogic.createBoard(); // Usamos la función de tu gameLogic
+            game.turn = 'X'; // Por defecto, X siempre empieza una nueva partida
+            game.winner = null;
+
+            // Emitimos el nuevo estado (tablero en blanco) a ambos jugadores
+            io.to(gameId).emit('update_state', {
+                board: game.board,
+                turn: game.turn,
+                winner: game.winner
+            });
+        });
+
+        // 6. Manejo de desconexión inesperada o abandono
+        socket.on('disconnect', () => {
+            console.log(`Cliente desconectado: ${socket.id}`);
+            
+            // Buscamos si el jugador que se fue estaba activo en alguna partida
+            const game = findGameBySocketId(socket.id);
+
+            if (game) {
+                // Notificamos a la sala (al jugador restante) que su oponente se fue
+                io.to(game.id).emit('player_disconnected');
+                
+                // Como es una sala temporal, si un jugador se va, destruimos la sala para liberar memoria
+                deleteGame(game.id);
+                
+                console.log(`Partida ${game.id} eliminada porque un jugador se desconectó.`);
+            }
+        });
     });
 };
