@@ -14,7 +14,7 @@ export function initSocketListeners(socket, state) {
     });
 
     socket.on('game_start', (data) => {
-        renderBoard(data.board);
+        renderBoard(data.board, data.winningLine || null);
         const activePlayerName = data.names[data.turn];
         const turnMessage = activePlayerName === state.playerName
             ? '¡Es tu turno!'
@@ -23,7 +23,7 @@ export function initSocketListeners(socket, state) {
     });
 
     socket.on('update_state', (data) => {
-        renderBoard(data.board);
+        renderBoard(data.board, data.winningLine || null);
 
         if (data.winner === 'Tie') {
             updateStatus('¡Es un empate! 🤝');

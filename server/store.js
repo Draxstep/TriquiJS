@@ -24,7 +24,8 @@ const createGame = () => {
         },
         board: Array(9).fill(null), // Tablero de 9 posiciones vacías
         turn: 'X', // Siempre empieza la X
-        winner: null // 'X', 'O', 'Tie' (Empate) o null
+        winner: null, // 'X', 'O', 'Tie' (Empate) o null
+        winningLine: null // Indices de la linea ganadora
     };
 
     return games[gameId];

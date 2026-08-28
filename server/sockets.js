@@ -88,10 +88,11 @@ module.exports = (io) => {
             game.board[index] = game.turn;
 
             // --- DETECTAR GANADOR O EMPATE ---
-            const winner = gameLogic.checkWinner(game.board);
+            const winData = gameLogic.checkWinner(game.board);
 
-            if (winner) {
-                game.winner = winner; // Puede ser 'X' o 'O'
+            if (winData) {
+                game.winner = winData.symbol; // Puede ser 'X' o 'O'
+                game.winningLine = winData.line;
             } else if (gameLogic.checkTie(game.board)) {
                 game.winner = 'Tie';  // Declaramos empate
             } else {
@@ -104,7 +105,8 @@ module.exports = (io) => {
                 board: game.board,
                 turn: game.turn,
                 winner: game.winner,
-                names: game.names
+                names: game.names,
+                winningLine: game.winningLine
             });
         });
 
@@ -118,13 +120,15 @@ module.exports = (io) => {
             game.board = gameLogic.createBoard(); // Usamos la función de tu gameLogic
             game.turn = 'X'; // Por defecto, X siempre empieza una nueva partida
             game.winner = null;
+            game.winningLine = null;
 
             // Emitimos el nuevo estado (tablero en blanco) a ambos jugadores
             io.to(gameId).emit('update_state', {
                 board: game.board,
                 turn: game.turn,
                 winner: game.winner,
-                names: game.names
+                names: game.names,
+                winningLine: game.winningLine
             });
         });
 

@@ -193,3 +193,7 @@ button {
 .hidden {
     display: none !important;
 }
+.winning-cell {
+    background-color: #86efac !important;
+    color: #166534;
+}

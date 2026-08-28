@@ -65,10 +65,14 @@ export function updateStatus(message) {
     document.getElementById('status-message').innerText = message;
 }
 
-export function renderBoard(board) {
+export function renderBoard(board, winningLine = null) {
     const cells = document.querySelectorAll('.cell');
     board.forEach((val, index) => {
         cells[index].innerText = val ? val : '';
+        cells[index].classList.remove('winning-cell');
+        if (winningLine && winningLine.includes(index)) {
+            cells[index].classList.add('winning-cell');
+        }
     });
 }
 
