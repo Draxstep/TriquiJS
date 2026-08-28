@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triqui en Línea</title>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div id="app">
+        <h1>Triqui en Línea</h1>
+
+        <!-- Welcome Screen -->
+        <div id="welcome-screen">
+            <input
+                type="text"
+                id="player-name"
+                placeholder="Tu nombre..."
+            >
+
+            <button id="btn-create">
+                Crear Partida
+            </button>
+
+            <div class="join-container">
+                <input
+                    type="text"
+                    id="game-id-input"
+                    placeholder="ID Partida (ej. 1234)"
+                >
+
+                <button id="btn-join">
+                    Unirse
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Screen (Hidden initially) -->
+        <div id="game-screen">
+            <div class="game-info">
+                <p id="game-info">
+                    Partida:
+                    <span id="display-game-id"></span>
+                </p>
+
+                <p id="status-message">
+                    Esperando a otro jugador...
+                </p>
+            </div>
+
+            <!-- The Board -->
+            <div id="board">
+                <button class="cell" data-index="0"></button>
+                <button class="cell" data-index="1"></button>
+                <button class="cell" data-index="2"></button>
+                <button class="cell" data-index="3"></button>
+                <button class="cell" data-index="4"></button>
+                <button class="cell" data-index="5"></button>
+                <button class="cell" data-index="6"></button>
+                <button class="cell" data-index="7"></button>
+                <button class="cell" data-index="8"></button>
+            </div>
+
+            <button id="btn-restart">
+                Reiniciar Juego
+            </button>
+        </div>
+    </div>
+
+    <!-- Socket.io -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- ES Modules -->
+    <script type="module" src="/js/main.js"></script>
+</body>
+</html>
