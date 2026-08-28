@@ -4,6 +4,7 @@ export function initUI(socket, state, emitEvent) {
     const gameIdInput = document.getElementById('game-id-input');
     const btnJoin = document.getElementById('btn-join');
     const btnRestart = document.getElementById('btn-restart');
+    const btnBack = document.getElementById('btn-back');
     const cells = document.querySelectorAll('.cell');
 
     // Crear partida
@@ -44,6 +45,15 @@ export function initUI(socket, state, emitEvent) {
             emitEvent(socket, 'restart_game', { gameId: state.gameId });
         }
     });
+
+    // Volver
+    btnBack.addEventListener('click', () => {
+        if (state.gameId) {
+            emitEvent(socket, 'leave_game', { gameId: state.gameId });
+            state.gameId = null;
+            showWelcomeScreen();
+        }
+    });
 }
 export function showGameScreen(gameId) {
     document.getElementById('welcome-screen').style.display = 'none';
@@ -60,4 +70,10 @@ export function renderBoard(board) {
     board.forEach((val, index) => {
         cells[index].innerText = val ? val : '';
     });
+}
+
+export function showWelcomeScreen() {
+    document.getElementById('welcome-screen').style.display = 'flex';
+    document.getElementById('game-screen').style.display = 'none';
+    document.getElementById('game-id-input').value = '';
 }

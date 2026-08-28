@@ -49,7 +49,8 @@ module.exports = (io) => {
             // Emitimos a TODOS en la sala (incluyendo a 'X') que el juego empieza
             io.to(gameId).emit('game_start', {
                 board: game.board,
-                turn: game.turn
+                turn: game.turn,
+                names: game.names
             });
 
             console.log(`${playerName} (${socket.id}) se unió a la sala ${gameId}`);
@@ -102,7 +103,8 @@ module.exports = (io) => {
             io.to(gameId).emit('update_state', {
                 board: game.board,
                 turn: game.turn,
-                winner: game.winner
+                winner: game.winner,
+                names: game.names
             });
         });
 
@@ -121,11 +123,23 @@ module.exports = (io) => {
             io.to(gameId).emit('update_state', {
                 board: game.board,
                 turn: game.turn,
-                winner: game.winner
+                winner: game.winner,
+                names: game.names
             });
         });
 
         // 6. Manejo de desconexión inesperada o abandono
+
+        socket.on('leave_game', ({ gameId }) => {
+            const game = getGame(gameId);
+            if (game) {
+                socket.leave(gameId);
+                socket.to(gameId).emit('player_disconnected');
+                deleteGame(gameId);
+                console.log(`Partida ${gameId} eliminada porque un jugador abandonó.`);
+            }
+        });
+
         socket.on('disconnect', () => {
             console.log(`Cliente desconectado: ${socket.id}`);
 

@@ -1,4 +1,4 @@
-import { showGameScreen, updateStatus, renderBoard } from './ui.js';
+import { showGameScreen, updateStatus, renderBoard, showWelcomeScreen } from './ui.js';
 
 export function initSocketListeners(socket, state) {
     socket.on('game_created', (data) => {
@@ -13,25 +13,36 @@ export function initSocketListeners(socket, state) {
         updateStatus('Te has unido a la partida. Esperando actualización del servidor...');
     });
 
+    socket.on('game_start', (data) => {
+        renderBoard(data.board);
+        const activePlayerName = data.names[data.turn];
+        const turnMessage = activePlayerName === state.playerName
+            ? '¡Es tu turno!'
+            : `Turno de ${activePlayerName}...`;
+        updateStatus(turnMessage);
+    });
+
     socket.on('update_state', (data) => {
-        // data asume tener: board (array), currentPlayer (string), winner (string), isDraw (boolean)
         renderBoard(data.board);
 
-        if (data.winner) {
-            updateStatus(`¡El ganador es ${data.winner}! 🏆`);
-        } else if (data.isDraw) {
+        if (data.winner === 'Tie') {
             updateStatus('¡Es un empate! 🤝');
+        } else if (data.winner) {
+            updateStatus(`¡El ganador es ${data.names[data.winner]}! 🏆`);
         } else {
-            const turnMessage = data.currentPlayer === state.playerName
+            const activePlayerName = data.names[data.turn];
+            const turnMessage = activePlayerName === state.playerName
                 ? '¡Es tu turno!'
-                : `Turno del oponente (${data.currentPlayer})...`;
+                : `Turno de ${activePlayerName}...`;
             updateStatus(turnMessage);
         }
     });
 
     // ⚙️ Tarea 5: Desconexión
     socket.on('player_disconnected', () => {
-        updateStatus('El oponente se ha desconectado. 🔌');
+        alert('El oponente se ha desconectado. 🔌');
+        state.gameId = null;
+        showWelcomeScreen();
     });
 
     // Manejo de errores (opcional pero recomendado)
