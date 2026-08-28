@@ -22,6 +22,10 @@ const createGame = () => {
             X: '', // Nombre del jugador X
             O: ''  // Nombre del jugador O
         },
+        scores: {
+            X: 0,
+            O: 0
+        },
         board: Array(9).fill(null), // Tablero de 9 posiciones vacías
         turn: 'X', // Siempre empieza la X
         winner: null, // 'X', 'O', 'Tie' (Empate) o null

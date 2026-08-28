@@ -50,7 +50,8 @@ module.exports = (io) => {
             io.to(gameId).emit('game_start', {
                 board: game.board,
                 turn: game.turn,
-                names: game.names
+                names: game.names,
+                scores: game.scores
             });
 
             console.log(`${playerName} (${socket.id}) se unió a la sala ${gameId}`);
@@ -93,8 +94,11 @@ module.exports = (io) => {
             if (winData) {
                 game.winner = winData.symbol; // Puede ser 'X' o 'O'
                 game.winningLine = winData.line;
+                game.scores[game.winner] += 2; // +2 puntos por ganar
             } else if (gameLogic.checkTie(game.board)) {
                 game.winner = 'Tie';  // Declaramos empate
+                game.scores.X += 1; // +1 punto por empate
+                game.scores.O += 1;
             } else {
                 // Si nadie ha ganado y no hay empate, pasamos el turno al otro jugador
                 game.turn = game.turn === 'X' ? 'O' : 'X';
@@ -106,6 +110,7 @@ module.exports = (io) => {
                 turn: game.turn,
                 winner: game.winner,
                 names: game.names,
+                scores: game.scores,
                 winningLine: game.winningLine
             });
         });
@@ -128,6 +133,7 @@ module.exports = (io) => {
                 turn: game.turn,
                 winner: game.winner,
                 names: game.names,
+                scores: game.scores,
                 winningLine: game.winningLine
             });
         });

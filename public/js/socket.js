@@ -1,4 +1,4 @@
-import { showGameScreen, updateStatus, renderBoard, showWelcomeScreen } from './ui.js';
+import { showGameScreen, updateStatus, renderBoard, showWelcomeScreen, updateScores } from './ui.js';
 
 export function initSocketListeners(socket, state) {
     socket.on('game_created', (data) => {
@@ -24,6 +24,7 @@ export function initSocketListeners(socket, state) {
 
     socket.on('update_state', (data) => {
         renderBoard(data.board, data.winningLine || null);
+        updateScores(data.scores, data.names);
 
         if (data.winner === 'Tie') {
             updateStatus('¡Es un empate! 🤝');

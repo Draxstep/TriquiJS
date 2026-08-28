@@ -81,3 +81,16 @@ export function showWelcomeScreen() {
     document.getElementById('game-screen').style.display = 'none';
     document.getElementById('game-id-input').value = '';
 }
+
+export function updateScores(scores, names) {
+    if (names && names.X) {
+        document.getElementById('player-x-name').innerText = names.X;
+    }
+    if (names && names.O) {
+        document.getElementById('player-o-name').innerText = names.O;
+    }
+    if (scores) {
+        document.getElementById('score-x').innerText = scores.X !== undefined ? scores.X : 0;
+        document.getElementById('score-o').innerText = scores.O !== undefined ? scores.O : 0;
+    }
+}
